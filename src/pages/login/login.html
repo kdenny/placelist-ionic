@@ -1,0 +1,84 @@
+
+<ion-content padding>
+  <div class="top-logo" style="width:100%;height:47%;" id="logo-header-top">
+    <img src="https://i.imgsafe.org/ff53747cb6.png">
+  </div>
+  <form [formGroup]="loginForm" (submit)="loginUser()" novalidate id="email-login-form">
+
+    <ion-item>
+      <ion-label stacked>Email</ion-label>
+      <ion-input #email formControlName="email" type="email" (change)="elementChanged(email)"
+        placeholder="Your email address"
+        [class.invalid]="!loginForm.controls.email.valid &&
+          (emailChanged || submitAttempt)"></ion-input>
+    </ion-item>
+    <ion-item class="error-message" *ngIf="!loginForm.controls.email.valid  &&
+      (emailChanged || submitAttempt)">
+      <p>Please enter a valid email.</p>
+    </ion-item>
+
+    <ion-item>
+      <ion-label stacked>Password</ion-label>
+      <ion-input #password formControlName="password" type="password"
+        (change)="elementChanged(password)"
+        placeholder="Your password"
+        [class.invalid]="!loginForm.controls.password.valid &&
+          (passwordChanged || submitAttempt)"></ion-input>
+    </ion-item>
+    <ion-item class="error-message" *ngIf="!loginForm.controls.password.valid  &&
+      (passwordChanged || submitAttempt)">
+      <p>Your password needs more than 6 characters.</p>
+    </ion-item>
+
+    <button ion-button block type="submit" style="background-color: #7D0074;">
+      Login
+    </button>
+
+
+
+  </form>
+
+  <div id="social-login">
+    <span>
+    <button ion-button icon-only>
+      <ion-icon name="logo-facebook"></ion-icon>
+    </button>
+    <button ion-button icon-only>
+      <ion-icon name="logo-twitter"></ion-icon>
+    </button>
+    <button ion-button icon-only>
+      <ion-icon name="logo-google"></ion-icon>
+    </button>
+    </span>
+
+
+  </div>
+  <div id="login-options">
+    <span>
+      <button ion-button clear (click)="createAccount()">
+        Register
+      </button>
+      <button ion-button clear (click)="goToResetPassword()">
+        Forgot Password
+      </button>
+      <!--<button ion-button icon-only>-->
+        <!--<ion-icon name="logo-twitter"></ion-icon>-->
+      <!--</button>-->
+      <!--<button ion-button icon-only>-->
+        <!--<ion-icon name="logo-google"></ion-icon>-->
+      <!--</button>-->
+    </span>
+    <!--<span>-->
+    <!--<button ion-button block clear (click)="goToResetPassword()" >-->
+            <!--I forgot my password 🙁-->
+          <!--</button>-->
+
+    <!--<button ion-button block clear (click)="createAccount()" >-->
+      <!--Create a new account-->
+    <!--</button>-->
+    <!--</span>-->
+  </div>
+
+
+
+</ion-content>

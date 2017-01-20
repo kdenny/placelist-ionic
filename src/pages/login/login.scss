@@ -1,0 +1,85 @@
+page-login {
+
+    #logo-header-top {
+      img {
+        height: 47vh;
+        width: 100vw;
+      }
+    }
+    form {
+        //margin-bottom: 32px;
+        button {
+            margin-top: 20px;
+            margin-bottom: 15px;
+        }
+    }
+
+    #email-login-form {
+      height: 18vh;
+      width: 100%;
+      margin-bottom: 110px;
+
+    }
+
+    #social-login {
+      width:100%;
+      margin-left: 10vw;
+      margin-bottom: 5px;
+
+      button {
+        margin-right: 10vw;
+        //margin-top: 40px;
+        //margin-bottom: 20px;
+        width: 15vw;
+      }
+    }
+
+
+    #login-options {
+      width:100%;
+      //margin-bottom: 50px;
+
+      button {
+        //margin-left: 5vw;
+        //margin-top: 40px;
+        //margin-bottom: 20px;
+        margin-left: 10vw;
+        width: 40vw;
+      }
+    }
+
+    //#login-options {
+    //  width:100%;
+    //  margin-bottom: 50px;
+    //
+    //  button {
+    //    margin-left: 10vw;
+    //    //margin-top: 40px;
+    //    //margin-bottom: 20px;
+    //    width: 35vw;
+    //  }
+    //}
+
+
+    p {
+        font-size: 0.8em;
+        color: #d2d2d2;
+    }
+
+    ion-label {
+        margin-left: 5px;
+    }
+
+    ion-input {
+        padding: 5px;
+    }
+
+    .invalid {
+        border-bottom: 1px solid #FF6153;
+    }
+
+    .error-message .item-inner {
+        border-bottom: 0 !important;
+    }
+
+}

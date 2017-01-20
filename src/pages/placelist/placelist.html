@@ -1,0 +1,68 @@
+<!--
+  Generated template for the Placelist page.
+
+  See http://ionicframework.com/docs/v2/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Placelist</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+
+  <h2>{{listTitle}} by {{placelist.author}}</h2>
+
+
+  <!--<ion-list>-->
+    <!--<ion-item *ngFor="let place of places" >-->
+      <!--<h2>{{place?.realName}}</h2>-->
+      <!--<p>Address: <strong>{{place?.address}}</strong></p>-->
+    <!--</ion-item>-->
+  <!--</ion-list>-->
+
+  <div *ngIf="viewMode==='map'" style="width:100%;height:70%;" id="map"></div>
+
+  <div class="myslides" style="height:25%; margin-right: -35vw; margin-left: -35vw;">
+    <!--<ion-slides loop="true" slidesPerView="3">-->
+       <!--<ion-slide *ngFor="let place of places">-->
+         <!--<h1>{{ place.realName }}</h1>-->
+          <!--<p>-->
+            <!--Address: {{ place.address }} <br>-->
+            <!--Neighborhood: {{ place.neighborhood }}-->
+          <!--</p>-->
+       <!--</ion-slide>-->
+    <!--</ion-slides>-->
+
+
+    <ks-swiper-container [options]="example1SwipeOptions">
+      <ks-swiper-slide *ngFor="let place of places" >
+        <ion-card class="place-card" style="width:80vw;">
+          <h1>{{ place.realName }}</h1>
+          <p>
+            Address: {{ place.address }} <br>
+            <a href="{{ place.url }}">Get Directions</a>
+          </p>
+        </ion-card>
+      </ks-swiper-slide>
+    </ks-swiper-container>
+    <!--<button (click)="movePrev()">Prev</button>-->
+    <!--<button (click)="moveNext()">Next</button>-->
+  </div>
+
+</ion-content>
+
+<ion-footer padding>
+    <ion-segment [(ngModel)]="viewMode">
+        <ion-segment-button value="list">
+            <ion-icon name="list" (ionSelect)="toggleMap()"></ion-icon>
+        </ion-segment-button>
+        <ion-segment-button value="map" (ionSelect)="toggleMap()">
+            <ion-icon name="map"></ion-icon>
+        </ion-segment-button>
+    </ion-segment>
+</ion-footer>

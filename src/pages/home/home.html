@@ -1,0 +1,16 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>
+      Placelist
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-list>
+    <ion-item *ngFor="let list of lists | async" (click)="goToList(list._id)" >
+      <h2>{{list?.title}}</h2>
+      <p>Author: <strong>{{list?.author}}</strong></p>
+    </ion-item>
+  </ion-list>
+</ion-content>
