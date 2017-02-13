@@ -1,4 +1,6 @@
 import { NgModule, ErrorHandler } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { MaterialModule } from '@angular/material';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { MyApp } from './app.component';
 
@@ -14,7 +16,12 @@ import { PlacesPage } from '../pages/places/places';
 import { PlacelistPage } from '../pages/placelist/placelist';
 import { AccountPage } from '../pages/account/account';
 
+import { AddPlaceModal } from '../pages/add-place-modal/add-place-modal';
+
 import { KSSwiperModule } from 'angular2-swiper';
+
+//import { CandTLeafletComponent  } from 'angular2.leaflet.components';
+//import { CandTLeafletService } from 'angular2.leaflet.components';
 
 
 
@@ -52,7 +59,9 @@ const myFirebaseAuthConfig = {
     ListsPage,
     PlacelistPage,
     PlacesPage,
-    AccountPage
+    AccountPage,
+    AddPlaceModal
+    //CandTLeafletComponent
   ],
   imports: [
     IonicModule.forRoot(MyApp),
@@ -70,12 +79,14 @@ const myFirebaseAuthConfig = {
     ListsPage,
     PlacelistPage,
     PlacesPage,
-    AccountPage
+    AccountPage,
+    AddPlaceModal
   ],
   providers: [
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     AuthData,
-    ListsData
+    ListsData,
+    //CandTLeafletService
   ]
 })
 export class AppModule {}

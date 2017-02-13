@@ -1,9 +1,13 @@
 page-login {
 
+    .no-scroll .scroll-content{
+         overflow: hidden;
+    }
+
     #logo-header-top {
       img {
-        height: 47vh;
-        width: 100vw;
+        height: 49vh;
+        width: 111vw;
       }
     }
     form {
@@ -15,50 +19,39 @@ page-login {
     }
 
     #email-login-form {
+      margin-top: -4vh;
       height: 18vh;
       width: 100%;
-      margin-bottom: 110px;
+      margin-bottom: 22vh;
 
     }
 
     #social-login {
       width:100%;
-      margin-left: 10vw;
-      margin-bottom: 5px;
+      margin-left: 16vw;
+      margin-right: 10vw;
 
       button {
         margin-right: 10vw;
         //margin-top: 40px;
         //margin-bottom: 20px;
-        width: 15vw;
+        width: 14vw;
       }
     }
 
 
     #login-options {
       width:100%;
+      margin-left: 18vw;
+      margin-right: 25vw;
+      margin-top: -1vh;
+      font-size: 8px;
       //margin-bottom: 50px;
 
       button {
-        //margin-left: 5vw;
-        //margin-top: 40px;
-        //margin-bottom: 20px;
-        margin-left: 10vw;
-        width: 40vw;
+        font-size: 10px;
       }
     }
-
-    //#login-options {
-    //  width:100%;
-    //  margin-bottom: 50px;
-    //
-    //  button {
-    //    margin-left: 10vw;
-    //    //margin-top: 40px;
-    //    //margin-bottom: 20px;
-    //    width: 35vw;
-    //  }
-    //}
 
 
     p {

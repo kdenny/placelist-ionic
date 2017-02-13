@@ -13,7 +13,6 @@ export class AuthData {
     af.auth.subscribe(user => {
       if (user) {
         this.fireAuth = user.auth;
-        console.log(user);
       }
     });
   }

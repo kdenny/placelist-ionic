@@ -5,15 +5,17 @@
 import { Injectable } from '@angular/core';
 //import * as firebase from 'firebase';
 import { AngularFire, AuthProviders, AuthMethods } from 'angularfire2';
+import {Platform} from 'ionic-angular/index';
+import {Observable} from 'rxjs/Observable';
 import {FirebaseObjectObservable} from "angularfire2/index";
 
 
 
 @Injectable()
 export class ListsData {
-  // We'll use this to create a database reference to the userProfile node.
 
   lists:any;
+  size:any;
   userLists:any;
 
   placelist:any;
@@ -30,7 +32,7 @@ export class ListsData {
   userListsArray:Array<any>;
 
 
-  constructor(public af:AngularFire) {
+  constructor(public af:AngularFire, private platform : Platform) {
     /**
      * Here we create the references I told you about 2 seconds ago 😛
      */
@@ -58,14 +60,12 @@ export class ListsData {
 
     this.lists.subscribe(snapshots => {
       snapshots.forEach(snapshot => {
-        //console.log(snapshot.title);
       })
     });
 
     this.userLists.subscribe(snapshots => {
       snapshots.forEach(snapshot => {
-        //console.log("User List");
-        //console.log(snapshot.title);
+
       })
     });
 
@@ -85,24 +85,32 @@ export class ListsData {
       this.currentList = snapshot;
     });
 
-    console.log(this.currentList);
-
     //this.item.set({ name: newName });
     return this.currentList;
   }
 
+  newList(data, author) {
+
+    var listKey = this.lists.push({
+        title: data.title,
+        type: data.type,
+        author: author
+    });
+    var addedList = {
+      title: data.title,
+      type: data.type,
+      author: author,
+      _id: listKey.path.o[1]
+    };
+    console.log(addedList);
+    this.af.database.object('https://marcopolo-1278.firebaseio.com/lists/'+addedList._id).set(addedList);
+  }
+
+
+  addPlaceToList(list_id, placeData) {
+    let o = this.af.database.list('https://marcopolo-1278.firebaseio.com/lists/' + list_id + '/places/');
+    o.push(placeData);
+  }
+
+
 }
-
-
-
-  //createEvent(eventName: string, eventDate: string,
-  //    eventPrice: number, eventCost: number): any {
-  //    return this.eventList.push({
-  //      name: eventName,
-  //      date: eventDate,
-  //      price: eventPrice,
-  //      cost: eventCost
-  //    }).then( newEvent => {
-  //      this.eventList.child(newEvent.key).child('id').set(newEvent.key);
-  //    });
-  //  }

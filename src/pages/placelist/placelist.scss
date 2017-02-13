@@ -1,12 +1,135 @@
 page-placelist {
 
+  font-family: 'Open Sans', sans-serif;
+
+  #close-button {
+    margin-top: 2vh;
+    margin-right: 5vw;
+
+  }
+
+  #list-title {
+    font-size: 24px;
+    color: #7D0074;
+    //margin-top: 2vh;
+    //margin-left: 4vw;
+  }
+
+  #author {
+    color: #7D0074;
+    font-size: 14px;
+  }
+
+  #subheading {
+    font-size: 12px;
+    margin-top: -1vw;
+    margin-left: -1vw;
+  }
+
+  .button-inner {
+    margin-right: -8vw;
+  }
+
+  #list-subheadings {
+    margin-top: -3.5vh;
+    margin-left: 2.5vw;
 
 
-  .ks-swiper-slide {
-    margin-left: 9vw;
-    .place-card {
+    #list-author {
+      font-size: 12px;
+      overflow: hidden;
+    }
+
+    #list-updated {
+      font-size: 10px;
+      overflow: hidden;
+    }
+
+  }
+
+  .place-name {
+    font-size: 16px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .place-tag {
+    font-size: 9px;
+    height: 1.8rem;
+    padding: 0 1.8rem;
+    margin-bottom: -0.15rem;
+  }
+
+
+
+  .flex-container {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    -ms-box-orient: horizontal;
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -moz-flex;
+    display: -webkit-flex;
+    display: flex;
+  }
+
+  .wrap    {
+    -webkit-flex-wrap: wrap;
+    flex-wrap: wrap;
+  }
+
+  .swiper-slide {
+    img {
+        width : 60px;
+        height : 60px;
+        position: relative;
+
+    }
+
+    .ion-card {
+
       width: 82vw;
     }
+  }
+
+  .swiper-slide {
+    margin-top: 8vh;
+    height: 35vh;
+  }
+
+  .swiper-slide-active {
+    margin-top : 8vh;
+    height: 35vh;
+  }
+
+  .swiper-slide-next {
+    margin-top : 3vh;
+    height: 40vh;
+    z-index: 2;
+  }
+
+  .swiper-slide-prev {
+    margin-top : 8vh;
+    height: 35vh;
+  }
+
+  .swiper-slide-duplicate .swiper-slide-next {
+    margin-top : 3vh;
+    height: 40vh;
+    z-index: 2;
+  }
+
+  .add-places {
+    position: absolute;
+    left: 90vw;
+    bottom: 65vh;
+    z-index: 10;
+    width: 2.0em;
+    height: 2.0em;
+    border-radius: 120px;
   }
 
 
