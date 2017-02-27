@@ -2,5 +2,13 @@
   "name": "Placelist",
   "app_id": "6b18d65f",
   "v2": true,
-  "typescript": true
+  "typescript": true,
+  "proxies": [
+    {
+      "path": "/lists/",
+      "proxyUrl": "http://placelist.pythonanywhere.com/lists"
+    }
+  ]
 }
+
+

@@ -28,7 +28,7 @@ import { KSSwiperModule } from 'angular2-swiper';
 // Importing Providers
 import { AuthData } from '../providers/auth-data';
 import { ListsData } from '../providers/lists-data';
-
+import { ListsData2 } from '../providers/lists-data-2';
 
 // Importing AF2 Module
 
@@ -48,6 +48,8 @@ const myFirebaseAuthConfig = {
   method: AuthMethods.Password
 };
 
+let config = { swipeBackEnabled:false };
+
 @NgModule({
   declarations: [
     MyApp,
@@ -64,7 +66,7 @@ const myFirebaseAuthConfig = {
     //CandTLeafletComponent
   ],
   imports: [
-    IonicModule.forRoot(MyApp),
+    IonicModule.forRoot(MyApp, null, config),
     AngularFireModule.initializeApp(firebaseConfig, myFirebaseAuthConfig),
     KSSwiperModule
   ],
@@ -86,6 +88,7 @@ const myFirebaseAuthConfig = {
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     AuthData,
     ListsData,
+    ListsData2
     //CandTLeafletService
   ]
 })

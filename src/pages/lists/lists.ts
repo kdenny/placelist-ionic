@@ -5,6 +5,8 @@ import { ListsData } from '../../providers/lists-data';
 
 import { PlacelistPage } from '../placelist/placelist';
 
+import { ListsData2 } from '../../providers/lists-data-2';
+
 
 
 /*
@@ -21,7 +23,7 @@ export class ListsPage {
 
   userlists;
 
-  constructor(public nav: NavController, public listsDataset: ListsData) {
+  constructor(public nav: NavController, public listsDataset: ListsData, public listsDataset2: ListsData2) {
 
       this.userlists = listsDataset.userLists;
       console.log(this.userlists);
