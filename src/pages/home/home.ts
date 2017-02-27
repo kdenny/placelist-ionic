@@ -25,9 +25,9 @@ export class HomePage {
   oLists;
 
   constructor(public nav: NavController, public listsDataset: ListsData, public authData : AuthData, public alertCtrl : AlertController, public navParams: NavParams, public modalCtrl: ModalController, public listsData2 : ListsData2) {
-      this.lists = listsDataset.lists;
       listsData2.lists = listsData2.getLists();
-      this.size = this.lists.length;
+      this.lists = listsData2.lists;
+      console.log(this.lists);
     };
 
   goToList(list_id:string) {
@@ -43,9 +43,7 @@ export class HomePage {
       list_type: data.type,
       author: 'kdenny'
     };
-    var mark = this.listsData2.newList(addedList);
-    //this.lists.push(addedList);
-    console.log(mark);
+    return this.listsData2.newList(addedList);
   }
 
   newList() {
@@ -72,7 +70,7 @@ export class HomePage {
         {
           text: 'Save',
           handler: data => {
-            this.addList(data);
+            let newList = this.addList(data);
           }
         }
       ]

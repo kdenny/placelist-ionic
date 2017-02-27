@@ -4,6 +4,7 @@ import {ViewController} from "ionic-angular/index";
 
 
 import { ListsData } from '../../providers/lists-data';
+import { ListsData2 } from '../../providers/lists-data-2';
 
 
 declare var google:any;
@@ -42,7 +43,7 @@ export class AddPlaceModal implements OnInit{
 
 
 
-  constructor(public navCtrl: NavController, public listsDataset: ListsData, public navParams: NavParams, public viewCtrl : ViewController) {
+  constructor(public navCtrl: NavController, public listsDataset: ListsData, public navParams: NavParams, public viewCtrl : ViewController, public listsDataset2: ListsData2) {
 
     this.tap = new google.maps.Map(document.getElementById('tap'), {
           center: {lat: -33.866, lng: 151.196},
@@ -91,10 +92,12 @@ export class AddPlaceModal implements OnInit{
                 console.log('page > getPlaceDetail > place > ', place);
                 // set full address
                 self.placedetails.address = place.formatted_address;
-                self.placedetails.realName = place.name;
+                self.placedetails.name = place.name;
                 self.placedetails.photo = place.photos[0].getUrl({'maxWidth': 60, 'maxHeight': 60});
                 self.placedetails.lat = place.geometry.location.lat();
-                self.placedetails.lng = place.geometry.location.lng();
+                self.placedetails.lon = place.geometry.location.lng();
+                self.placedetails.state = 'DC';
+                self.placedetails.place_type = 'restaurant';
                 for (var i = 0; i < place.address_components.length; i++) {
                     let addressType = place.address_components[i].types[0];
                     let values = {
@@ -109,7 +112,7 @@ export class AddPlaceModal implements OnInit{
                     }
                 }
 
-                self.placedetails.short_address = self.placedetails.components.street_number.short + " " + self.placedetails.components.route.short;
+                self.placedetails.street_address = self.placedetails.components.street_number.short + " " + self.placedetails.components.route.short;
                 // set place in map
                 // populate
                 self.address.set = true;
@@ -125,7 +128,7 @@ export class AddPlaceModal implements OnInit{
 
 
   dismiss() {
-   let data = { 'foo': 'bar' };
+   let data = this.newPlaces[0];
    this.viewCtrl.dismiss(data);
   }
 
@@ -134,7 +137,7 @@ export class AddPlaceModal implements OnInit{
           address: '',
           lat: '',
           lng: '',
-          realName: '',
+          name: '',
           short_address: '',
           photo: '',
           components: {
@@ -185,6 +188,13 @@ export class AddPlaceModal implements OnInit{
   addToList() {
 
     this.listsDataset.addPlaceToList(this.navParams.get('list_id'), this.newPlaces[0]);
+    this.dismiss();
+
+  }
+
+  addToList2() {
+
+    this.listsDataset2.addPlaceToList(this.navParams.get('list_id'), this.newPlaces[0]);
     this.dismiss();
 
   }

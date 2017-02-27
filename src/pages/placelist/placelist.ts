@@ -1,7 +1,8 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, OnInit } from '@angular/core';
 import { Config, NavController, NavParams, AlertController } from 'ionic-angular';
 
 import { ListsData } from '../../providers/lists-data';
+import { ListsData2 } from '../../providers/lists-data-2';
 import { AuthData } from '../../providers/auth-data';
 
 import 'leaflet';
@@ -23,7 +24,7 @@ import {ModalController} from "ionic-angular/index";
   templateUrl: 'placelist.html'
 })
 
-export class PlacelistPage {
+export class PlacelistPage implements OnInit {
 
   placelist;
   featureGroup = L.featureGroup([]);
@@ -31,6 +32,7 @@ export class PlacelistPage {
   places;
   currentList;
   listTitle;
+  author;
 
   currentPlace;
   currentSlide;
@@ -49,56 +51,65 @@ export class PlacelistPage {
 
 
   constructor(
-    public nav: NavController, public listsDataset: ListsData, public authData : AuthData, public alertCtrl : AlertController, public navParams: NavParams, public modalCtrl : ModalController
+    public nav: NavController, public listsDataset: ListsData, public listsDataset2: ListsData2, public authData : AuthData, public alertCtrl : AlertController, public navParams: NavParams, public modalCtrl : ModalController
   ) {
-
       this.viewMode = 'map';
-
-      this.placelist = listsDataset.getPlacelist(this.navParams.get('list_id'));
-
-      this.currentList = this.navParams.get('list_id');
-      this.listTitle = this.placelist.title;
       this.currentSlide = 1;
 
-      this.places = this.placelist.places;
-
       this.swipeStarted = false;
+      this.listTitle;
+      this.author;
+  }
 
-      if (this.places) {
+  ngOnInit() {
+    let aList = this.listsDataset2.getPlacelist(this.navParams.get('list_id'))
+      .then(result => {
+        this.placelist = result;
+        console.log(this.placelist);
+        this.listTitle = this.placelist.title;
+        this.places = this.placelist.places;
+        this.author = this.placelist.author.username;
+        if (this.places.length > 0) {
 
-        this.showMap();
+          this.showMap();
 
-        this.example1SwipeOptions = {
-          slidesPerView: 3,
-          loop: true,
-          initialSlide: (this.places.length - 1),
-          spaceBetween: 225,
-          onSlideChangeEnd: (slider) => {
-            this.currentSlide = slider.realIndex + 1;
-            if (this.currentSlide >= this.places.length) {
-              this.currentSlide = 0;
-            }
+          this.example1SwipeOptions = {
+            slidesPerView: 3,
+            loop: true,
+            initialSlide: (this.places.length - 1),
+            spaceBetween: 225,
+            onSlideChangeEnd: (slider) => {
+              this.currentSlide = slider.realIndex + 1;
+              if (this.currentSlide >= this.places.length) {
+                this.currentSlide = 0;
+              }
 
-            this.currentPlace = this.places[this.currentSlide];
+              this.currentPlace = this.places[this.currentSlide];
 
-            if (this.currentSlide != 0) {
-              this.swipeStarted = true;
-            }
+              if (this.currentSlide != 0) {
+                this.swipeStarted = true;
+              }
 
 
-            this.updateMarkers();
-            if (this.map) {
-              if (this.swipeStarted) {
-                //console.log(this.map.getCenter());
-                //console.log(this.listCenter);
-                this.updateMap(this.currentPlace);
+              this.updateMarkers();
+              if (this.map) {
+                if (this.swipeStarted) {
+                  //console.log(this.map.getCenter());
+                  //console.log(this.listCenter);
+                  this.updateMap(this.currentPlace);
+                }
               }
             }
-          }
-        };
+          };
 
       }
-  }
+      });
+
+
+
+
+
+   }
 
   dismiss() {
    let data = { 'foo': 'bar' };
@@ -110,7 +121,7 @@ export class PlacelistPage {
 
           this.map = L.map("map").setView([38.900221, -76.996895], 14);
           L.tileLayer('http://{s}.tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png').addTo(this.map);
-          if (this.featureGroup) {
+          if (this.featureGroup && this.places.length > 0) {
             this.map.removeLayer(this.featureGroup);
             this.map.addLayer(this.featureGroup);
           }
@@ -128,16 +139,17 @@ export class PlacelistPage {
     }
 
   updateMarkers() {
-    if (this.featureGroup) {
-      this.map.removeLayer(this.featureGroup);
-      var count = 0;
-      this.places.forEach(place => {
+    if (this.places.length > 0) {
+      if (this.featureGroup) {
+        this.map.removeLayer(this.featureGroup);
+        var count = 0;
+        this.places.forEach(place => {
           count++;
 
           // Open popup if selected in slider
-          if (place._id == this.currentPlace._id) {
-            let marker: any = L.marker([place.lat, place.lon])
-            .bindPopup(place.realName + "<br>" + place.address);
+          if (place.id == this.currentPlace.id) {
+            let marker:any = L.marker([place.lat, place.lon])
+              .bindPopup(place.name + "<br>" + place.street_address);
             marker.data = place;
             marker.data.count = count;
             marker.on('click', ()=> {
@@ -148,44 +160,48 @@ export class PlacelistPage {
           }
           // Don't open popup if not selected
           else {
-            let marker: any = L.marker([place.lat, place.lon])
-            .bindPopup(place.realName + "<br>" + place.address);
+            let marker:any = L.marker([place.lat, place.lon])
+              .bindPopup(place.name + "<br>" + place.street_address);
             marker.data = place;
             marker.data.lat = place.lat;
             marker.data.lon = place.lon;
             marker.data.count = count;
 
-            marker.on('click', ()=> {this.moveToSlide(marker.data)});
+            marker.on('click', ()=> {
+              this.moveToSlide(marker.data)
+            });
             this.featureGroup.addLayer(marker);
           }
 
 
-      });
-      this.map.addLayer(this.featureGroup);
+        });
+        this.map.addLayer(this.featureGroup);
 
+      }
     }
 
 
   }
 
   showMarkers() {
+    if (this.places.length > 0) {
+      this.places.forEach(place => {
+        let marker:any = L.marker([place.lat, place.lon])
+          .bindPopup(place.name + "<br>" + place.street_address).openPopup();
 
-        this.places.forEach(place => {
-            let marker: any = L.marker([place.lat, place.lon])
-              .bindPopup(place.realName + "<br>" + place.address).openPopup();
+        if (this.currentPlace) {
+          if (place.id == this.currentPlace.id) {
 
-            if (this.currentPlace) {
-              if (place._id == this.currentPlace._id) {
+            marker.openPopup();
+          }
+        }
+        marker.data = place;
+        this.featureGroup.addLayer(marker);
 
-                marker.openPopup();
-              }
-            }
-            marker.data = place;
-            this.featureGroup.addLayer(marker);
-
-        });
+      });
 
     }
+  }
 
   moveNext() {
     this.swiperContainer.swiper.slideNext();
@@ -223,62 +239,32 @@ export class PlacelistPage {
   }
 
   moveToSlide(data) {
-    if (data.count < this.places.length) {
-      this.swiperContainer.swiper.slideTo(data.count + 1);
-    }
-    else {
-      this.swiperContainer.swiper.slideTo(1);
-    }
+    if (this.places.length > 0) {
+      if (data.count < this.places.length) {
+        this.swiperContainer.swiper.slideTo(data.count + 1);
+      }
+      else {
+        this.swiperContainer.swiper.slideTo(1);
+      }
 
-    this.updateMap(data);
+      this.updateMap(data);
+    }
   }
 
-  addPlace() {
-    console.log(this.authData.fireAuth);
-    let prompt = this.alertCtrl.create({
-      title: 'List Name',
-      message: "Enter a name for this new song you're so keen on adding",
-      inputs: [
-        {
-          name: 'title',
-          placeholder: 'Title'
-        },
-        {
-          name: 'type',
-          placeholder: 'Type'
-        },
-      ],
-      buttons: [
-        {
-          text: 'Cancel',
-          handler: data => {
-            console.log('Cancel clicked');
-          }
-        },
-        {
-          text: 'Save',
-          handler: data => {
-            this.listsDataset.addPlaceToList(this.navParams.get('list_id'), data);
-            //this.placelist.places.push({
-            //  title: data.title,
-            //  type: data.type,
-            //  author: this.authData.fireAuth.email
-            //});
-          }
-        }
-      ]
-    });
-    prompt.present();
-
-
-
-
-  }
 
   addPlaceModal() {
     let addPlaceModal = this.modalCtrl.create(AddPlaceModal, {
       list_id: this.navParams.get('list_id')
     });
+     addPlaceModal.onDidDismiss(data => {
+       console.log(data);
+       if (data) {
+         data['id'] = this.places.length + 1;
+         this.places.push(data);
+         this.showMarkers();
+         this.updateMarkers();
+       }
+     });
 
    addPlaceModal.present();
   }
