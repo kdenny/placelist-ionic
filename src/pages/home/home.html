@@ -1,22 +1,27 @@
-<ion-header>
-  <ion-navbar>
-    <ion-title>
-      Placelist
-    </ion-title>
-  </ion-navbar>
-</ion-header>
+
+<!--<ion-content padding>-->
+
+  <!--<super-tabs [rootNavCtrl]="navCtrl" height="100%" tabsColor="light" toolbarColor="dark" sliderColor="light">-->
+    <!--<super-tab [tabRoot]="page1" [title]="showTitles? 'For You' : ''" [icon]="showIcons? 'home': ''"></super-tab>-->
+    <!--<super-tab [tabRoot]="page2" [title]="showTitles? 'Newsfeed' : ''" [icon]="showIcons? 'pin' : ''"></super-tab>-->
+  <!--</super-tabs>-->
+<!--</ion-content>-->
+
+<!--<page-newsfeed>-->
+
+<!--</page-newsfeed>-->
 
 <ion-content padding>
+  <div *ngIf="lists">
 
-  <button ion-button icon-only (click)="newList()">
-    <ion-icon name="add"></ion-icon>
-  </button>
-
-  <ion-list *ngIf="lists">
-    <ion-item *ngFor="let list of lists | async" (click)="goToList(list.id)" >
-    <!--<ion-item *ngFor="let list of lists | async" (click)="presentModal(list._id)">-->
-      <h2>{{list?.title}}</h2>
-      <p>Author: <strong>{{list?.author.username}}</strong></p>
-    </ion-item>
-  </ion-list>
+    <ion-list>
+      <ion-item *ngFor="let list of lists" (click)="goToList(list.id)" >
+        <h2>{{list?.title}}</h2>
+        <p>Author: <strong>{{list?.author.username}}</strong></p>
+      </ion-item>
+    </ion-list>
+  </div>
+  <div *ngIf="!lists">
+    Loading...
+  </div>
 </ion-content>

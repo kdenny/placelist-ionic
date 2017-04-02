@@ -1,0 +1,17 @@
+<ion-content padding>
+  <div *ngIf="lists">
+    <button ion-button icon-left (click)="newList()" id="add-list-btn" style="margin-top: 0.25vh; margin-bottom: 1.25vh;">
+      <ion-icon name="add"></ion-icon> Add List
+    </button>
+
+    <ion-list>
+      <ion-item *ngFor="let list of lists" (click)="goToList(list.id)" >
+        <h2>{{list?.title}}</h2>
+        <p>Author: <strong>{{list?.author.username}}</strong></p>
+      </ion-item>
+    </ion-list>
+  </div>
+  <div *ngIf="!lists">
+    Loading...
+  </div>
+</ion-content>

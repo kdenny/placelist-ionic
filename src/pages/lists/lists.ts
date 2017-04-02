@@ -1,12 +1,13 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 
-import { ListsData } from '../../providers/lists-data';
+//import { ListsData } from '../../providers/lists-data';
 
 import { PlacelistPage } from '../placelist/placelist';
 
 import { ListsData2 } from '../../providers/lists-data-2';
 
+import { AuthenticationService } from '../../providers/auth-data-token';
 
 
 /*
@@ -22,11 +23,15 @@ import { ListsData2 } from '../../providers/lists-data-2';
 export class ListsPage {
 
   userlists;
+  lists;
+  currentUser;
 
-  constructor(public nav: NavController, public listsDataset: ListsData, public listsDataset2: ListsData2) {
+  constructor(public nav: NavController, public listsData2: ListsData2, public authService: AuthenticationService) {
 
-      this.userlists = listsDataset.userLists;
-      console.log(this.userlists);
+      this.listsData2.getLists()
+      .then(data => {this.lists = data;
+        this.listsData2.lists = data;});
+      this.currentUser = this.authService.currentUsername;
 
     };
 

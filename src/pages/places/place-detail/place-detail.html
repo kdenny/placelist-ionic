@@ -1,0 +1,120 @@
+<!--
+  Generated template for the Placelist page.
+
+  See http://ionicframework.com/docs/v2/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+
+<ion-content>
+  <ion-row style="margin-bottom: -3vh;">
+    <ion-col width-90>
+      <div *ngIf="place">
+        <div *ngIf="place.photoUrl">
+                <img src="{{place.photoUrl}}" style="width: 100vw; height: 35vh; margin-left: 4vw; z-index: 0;">
+
+        </div>
+        <div *ngIf="!place.photoUrl">
+                <img src="https://i.imgsafe.org/02c1b29896.jpeg" style="width: 100vw; height: 35vh; margin-left: 4vw; z-index: 0;">
+        </div>
+      </div>
+
+    </ion-col>
+    <ion-col width-10>
+      <div class="close-button" style="margin-left: -3vw;">
+        <button ion-button clear icon-only (click)="dismiss()">
+          <ion-icon name="close"></ion-icon>
+        </button>
+      </div>
+    </ion-col>
+
+
+  </ion-row>
+
+  <ion-row style="margin-bottom: -3vh;">
+    <ion-col width-80>
+      <div *ngIf="place" style="margin-left: 3vw;">
+        <h1 style="font-size: 2.6rem; font-weight: 700;">{{ place.name }} </h1>
+      </div>
+
+    </ion-col>
+    <ion-col width-20>
+      <div *ngIf="place">
+        <span>
+          <h1>
+            <ion-icon name="ios-heart-outline" style="margin-left: -5vw;"></ion-icon>
+            <ion-icon name="ios-add-circle-outline" style="margin-left: 6vw;"></ion-icon>
+          </h1>
+        </span>
+      </div>
+    </ion-col>
+
+
+
+  </ion-row>
+
+
+  <ion-item style="height: 25vh; margin-left: 1vw; z-index: 0;" *ngIf="place">
+    <ion-row class="place-name">
+      <span><ion-icon name='restaurant' item-left></ion-icon> <b>{{ place.place_type }}</b></span>
+    </ion-row>
+    <ion-row class="place-address">
+      <span><ion-icon name='pin' item-left></ion-icon> {{ place.street_address }} </span>
+    </ion-row>
+    <ion-row class="place-address">
+      <span style="margin-left: 9vw; margin-top: -1vh;">{{ place.neighborhood }}, {{ place.city }}, {{ place.state }}</span>
+    </ion-row>
+
+
+    <div class="place-address" style="margin-top: 2vh;">
+      <a href="{{ place.url }}">(Click to visit place website)</a>
+    </div>
+
+  </ion-item>
+
+  <ion-item style="height: 8vh; margin-left: 1vw; z-index: 0;" *ngIf="placesData.currentList">
+    <div class="place-name">
+      Added to {{ placesData.currentList.title }} by {{ placesData.currentList.author.username }}
+    </div>
+
+  </ion-item>
+
+  <ion-list-header style="margin-left: 3vw;" class="tags-header">
+    <div class="place-detail-row">
+      <b> Tags </b>
+    </div>
+  </ion-list-header>
+
+  <ion-row style="height: 15vh;">
+
+
+  </ion-row>
+
+  <ion-list-header style="margin-left: 3vw; margin-top: 0vh;" class="other-lists-header">
+    <div class="place-detail-row">
+      <b> Included in Lists </b>
+    </div>
+  </ion-list-header>
+
+  <ion-row style="height: 20vh;">
+
+  </ion-row>
+
+  <!--<ion-row *ngIf="place" class="image-row">-->
+
+    <!--<div class="place-image">-->
+    <!--</div>-->
+
+
+
+  <!--</ion-row>-->
+
+  <!--<ion-row *ngIf="place">-->
+
+    <!--<div class="address-row">-->
+      <!--{{ place.street_address }}-->
+    <!--</div>-->
+
+  <!--</ion-row>-->
+
+
+</ion-content>

@@ -11,7 +11,7 @@
     <ion-col width-50> <strong>Add Place</strong> </ion-col>
     <ion-col width-10 offset-25>
         <div id="close-button">
-          <button ion-button clear icon-only (click)="dismiss()">
+          <button ion-button clear icon-only (click)="close()">
             <ion-icon name="close"></ion-icon>
           </button>
         </div>
@@ -35,29 +35,31 @@
             {{ item.description }}
   </ion-item>
 
-  <ion-item *ngFor="let place of newPlaces">
+  <ion-row *ngFor="let place of newPlaces">
 
     <ion-card class="new-place-card">
 
-      <ion-row>
+      <ion-row *ngIf="place.photo">
         <ion-col width-25>
           <img src="{{ place.photo }}" >
         </ion-col>
         <ion-col width-75>
           <ion-row>
-            <div class="place-name">{{place.realName}}</div>
+             <ion-item>
+               <ion-label><strong>{{place.name}}</strong></ion-label>
+               <ion-textarea placeholder="Add an optional blurb about this place (max 140 char)"></ion-textarea>
+             </ion-item>
           </ion-row>
-          <!--<ion-row>-->
-            <!--<div class="flex-container wrap">-->
-              <!--<button ion-button round class="place-tag">Fancy</button>-->
-              <!--<button ion-button round class="place-tag">Independent</button>-->
-              <!--<button ion-button round class="place-tag">Dinner</button>-->
-              <!--<button ion-button round class="place-tag">Asian Fusion</button>-->
-              <!--<button ion-button round class="place-tag">Cocktails</button>-->
-            <!--</div>-->
-          <!--</ion-row>-->
         </ion-col>
       </ion-row>
+
+
+        <ion-row *ngIf="!place.photo">
+           <ion-item>
+             <ion-label><strong>{{place.name}}</strong></ion-label>
+             <ion-textarea placeholder="Add an optional blurb about this place (max 140 char)"></ion-textarea>
+           </ion-item>
+        </ion-row>
 
       <!--<ion-row style="margin-bottom: 7vh;">-->
         <!--<div style="text-align: left; margin-left: 1vw;">-->
@@ -68,9 +70,9 @@
 
     </ion-card>
 
-  </ion-item>
+  </ion-row>
 
-  <button ion-button (click)="addToList2()">
+  <button ion-button (click)="addToList()">
     <ion-icon name="add"></ion-icon> Add To List
   </button>
 

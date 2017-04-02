@@ -1,10 +1,10 @@
 import { Component, ViewChild, NgZone, OnInit } from '@angular/core';
 import { Config, NavController, NavParams } from 'ionic-angular';
 import {ViewController} from "ionic-angular/index";
+import { Keyboard } from '@ionic-native/keyboard';
 
 
-import { ListsData } from '../../providers/lists-data';
-import { ListsData2 } from '../../providers/lists-data-2';
+import { ListsData2 } from '../../../providers/lists-data-2';
 
 
 declare var google:any;
@@ -31,6 +31,8 @@ export class AddPlaceModal implements OnInit{
   placesService:any;
   placedetails: any;
 
+  placeResult;
+
 
   autocompleteItems: any;
   autocomplete: any;
@@ -40,18 +42,19 @@ export class AddPlaceModal implements OnInit{
 
   newPlaces: any;
 
+  loading;
 
 
 
-  constructor(public navCtrl: NavController, public listsDataset: ListsData, public navParams: NavParams, public viewCtrl : ViewController, public listsDataset2: ListsData2) {
+
+  constructor(public navCtrl: NavController, public navParams: NavParams, public viewCtrl : ViewController, public listsDataset2: ListsData2, public keyboard: Keyboard) {
 
     this.tap = new google.maps.Map(document.getElementById('tap'), {
           center: {lat: -33.866, lng: 151.196},
           zoom: 1
         });
 
-    this.placelist = listsDataset.getPlacelist(this.navParams.get('list_id'));
-
+    this.loading = false;
     this.autocompleteItems = [];
     this.newPlaces = [];
     this.autocomplete = {
@@ -93,7 +96,8 @@ export class AddPlaceModal implements OnInit{
                 // set full address
                 self.placedetails.address = place.formatted_address;
                 self.placedetails.name = place.name;
-                self.placedetails.photo = place.photos[0].getUrl({'maxWidth': 60, 'maxHeight': 60});
+                self.placedetails.photoUrl = place.photos[0].getUrl({'maxWidth': 900, 'maxHeight': 400});
+                self.placedetails.photo = place.photos[0].getUrl({'maxWidth': 500, 'maxHeight': 500});
                 self.placedetails.lat = place.geometry.location.lat();
                 self.placedetails.lon = place.geometry.location.lng();
                 self.placedetails.state = 'DC';
@@ -116,19 +120,28 @@ export class AddPlaceModal implements OnInit{
                 // set place in map
                 // populate
                 self.address.set = true;
-                console.log('page > getPlaceDetail > details > ', self.placedetails);
+                self.newPlaces.pop();
                 self.newPlaces.push(self.placedetails);
-                console.log(self.newPlaces);
                 self.reset();
             }else{
-                console.log('page > getPlaceDetail > status > ', status);
+              console.log("Oops")
             }
         }
     }
 
 
   dismiss() {
-   let data = this.newPlaces[0];
+   if (this.placeResult) {
+     let data = this.placeResult;
+     this.keyboard.close();
+     this.viewCtrl.dismiss(data);
+   }
+
+  }
+
+  close() {
+   let data = null;
+   this.keyboard.close();
    this.viewCtrl.dismiss(data);
   }
 
@@ -155,15 +168,29 @@ export class AddPlaceModal implements OnInit{
   }
 
   chooseItem(item: any) {
-      console.log('modal > chooseItem > item > ', item);
-      var id = item.place_id;
-      this.getPlaceDetail(id);
-      this.updateSearch();
-      //this.viewCtrl.dismiss(item);
+      this.keyboard.close();
+      if (!this.loading) {
+
+        var id = item.place_id;
+
+        var placeName = item.terms[0].value;
+        var thisPlace = {
+          'name': placeName
+        }
+        this.newPlaces.push(thisPlace);
+        console.log(thisPlace)
+
+        this.loading = true;
+        this.autocomplete.query = '';
+        this.updateSearch();
+        this.reset();
+        this.getPlaceDetail(id);
+
+        //this.viewCtrl.dismiss(item);
+      }
   }
 
   updateSearch() {
-      console.log('modal > updateSearch');
       if (this.autocomplete.query == '') {
           this.autocompleteItems = [];
           return;
@@ -185,19 +212,20 @@ export class AddPlaceModal implements OnInit{
       });
   }
 
+
   addToList() {
+    this.keyboard.close();
+    this.listsDataset2.addPlaceToList(this.navParams.get('list_id'), this.newPlaces[0])
+      .then(response => {
+        this.placeResult = response.json();
+        console.log(this.placeResult);
+        this.dismiss();
+      });
 
-    this.listsDataset.addPlaceToList(this.navParams.get('list_id'), this.newPlaces[0]);
-    this.dismiss();
-
-  }
-
-  addToList2() {
-
-    this.listsDataset2.addPlaceToList(this.navParams.get('list_id'), this.newPlaces[0]);
-    this.dismiss();
 
   }
+
+
 
 
 }

@@ -6,7 +6,10 @@ import { Subject }    from 'rxjs/Subject';
 
 
 import { FormBuilder, Validators } from '@angular/forms';
-import { List } from './list'
+import { List } from './objects/list'
+
+import { AuthenticationService } from './auth-data-token';
+
 
 import 'rxjs/add/operator/toPromise';
 import 'rxjs/add/operator/map';
@@ -15,11 +18,12 @@ import 'rxjs/add/operator/map';
 @Injectable()
 export class ListsData2 {
 
- lists:any;
+ lists: List[];
  currentList:any;
   postResult:any;
   placelist:any;
   places:any;
+
  private apiUrl = 'http://placelist.pythonanywhere.com/lists/';
 
  private headers = new Headers({'Content-Type': 'application/json'});
@@ -28,7 +32,7 @@ export class ListsData2 {
   private subject:  Subject<List[]> = new Subject<List[]>();
 
 
- constructor(private http: Http) {
+ constructor(private http: Http, public authService: AuthenticationService) {
    //this.lists = this.getLists();
 
  }
@@ -42,9 +46,15 @@ export class ListsData2 {
 
 
  newList(list) {
+    list.author = this.authService.currentUsername;
+    if (!list.author) {
+      console.log(this.authService.currentUsername);
+      list.author = 'kdenny';
+    }
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
     let body = JSON.stringify(list);
+    console.log(body);
     return this.http.post(this.apiUrl, body, options).toPromise()
    .then(response => this.currentList = response.json() as List)
    .catch(this.handleError);
@@ -54,11 +64,10 @@ export class ListsData2 {
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
     let body = JSON.stringify(placeData);
+    console.log(body);
     let apiUrlList = this.apiUrl + list_id + '/';
-
-    return this.http.post(apiUrlList, body, options).toPromise()
-   .then(response => this.postResult = response.json())
-   .catch(this.handleError);
+    console.log(apiUrlList);
+    return this.http.post(apiUrlList, body, options).toPromise();
   }
 
   getPlacelist(list_id) {
@@ -79,65 +88,13 @@ export class ListsData2 {
 
   }
 
-
- // announceQuery(queries: Query[]) {
- //   this.queries = queries;
- //   this.subject.next(queries);
- // }
- //
- // getAnnouncedQueries(): Observable<Query[]> {
- //   return this.subject.asObservable();
- // }
- //
- // removeByAttr(arr, attr, value, data) {
- //   var i = arr.length;
- //   var oldId;
- //   while(i--){
- //      if( arr[i]
- //          && arr[i].hasOwnProperty(attr)
- //          && (arguments.length > 2 && arr[i][attr] === value ) ){
- //
- //           oldId = arr[i]['id'];
- //
- //          arr.splice(i,1);
- //
- //      }
- //   }
- //   data['id'] = oldId;
- //   // arr.push(data);
- //   return arr;
- // }
- //
- // updateByAttr(arr, attr, value, data) {
- //   this.removeByAttr(arr, attr, value, data);
- //   arr.push(data);
- //   return arr;
- // }
- //
- //
- //
- //addQuery(query) {
- //   let headers = new Headers({ 'Content-Type': 'application/json' });
- //   let options = new RequestOptions({ headers: headers });
- //   let body = JSON.stringify(query);
- //   return this.http.post(this.apiUrl, body, options).map((res: Response) => res.json());
- // }
- //
- // deleteQuery(query) {
- //   let headers = new Headers({ 'Content-Type': 'application/json' });
- //   let body = JSON.stringify(query);
- //   let options = new RequestOptions({ headers: headers, body: body });
- //
- //   return this.http.delete(this.apiUrl, options).map((res: Response) => res.json());
- // }
- //
- // selectQuery(selected) {
- //   this.currentQuery = selected;
- //   this.queryForm.patchValue({
- //     sql_query: this.currentQuery.sql_query,
- //     filename: this.currentQuery.filename
- //   });
- // }
+  removePlaceFromList(list_id, place_id) {
+    let headers = new Headers({ 'Content-Type': 'application/json' });
+    let options = new RequestOptions({ headers: headers });
+    let apiUrlRemovePlace = this.apiUrl + list_id + '/places/' + place_id + '/';
+    console.log(apiUrlRemovePlace);
+    return this.http.delete(apiUrlRemovePlace, options).toPromise();
+  }
 
 
  private handleError(error: any): Promise<any> {

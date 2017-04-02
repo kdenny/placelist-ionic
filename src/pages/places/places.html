@@ -14,5 +14,46 @@
 
 
 <ion-content padding>
+  <!--<super-tabs [rootNavCtrl]="navCtrl" height="100%" tabsColor="light" toolbarColor="dark" sliderColor="light">-->
+    <!--<super-tab [tabRoot]="page1" [title]="showTitles? 'First page' : ''" [icon]="showIcons? 'home': ''"></super-tab>-->
+    <!--<super-tab [tabRoot]="page2" [title]="showTitles? 'Second page' : ''" [icon]="showIcons? 'pin' : ''"></super-tab>-->
+    <!--<super-tab [tabRoot]="page3" [title]="showTitles? 'Third page' : ''" [icon]="showIcons? 'heart' : ''"></super-tab>-->
+  <!--</super-tabs>-->
+  <div class="places" *ngIf="places">
+    <div class="item-place border-bottom" *ngFor="let place of places">
+      <ion-item class="no-border" (click)="goToPlace(place.id)">
+        <h2 >{{ place.name }}</h2>
+        <!--<ion-icon name="md-more" item-right color="gray" class="pull-right" (click)="showActions()"></ion-icon>-->
+        <ion-icon name="md-more" item-right color="gray" class="pull-right"></ion-icon>
+      </ion-item>
+      <ion-item text-wrap no-padding class="post-body no-border" (click)="goToPlace(place.id)">
+        <div *ngIf="place.photoUrl">
+          <!--<img class="full-image" *ngIf="post.image" src="{{ post.image }}" (click)="viewPost(post.id)">-->
+          <img class="full-image" src="{{ place.photoUrl }}">
+
+        </div>
+        <div *ngIf="!place.photoUrl">
+            <img class="full-image" src="https://i.imgsafe.org/02c1b29896.jpeg">
+
+        </div>
+
+        <div class="actions">
+          <span>
+            <!--<ion-icon name="ios-heart" color="danger" [hidden]="!post.liked"></ion-icon>-->
+            <ion-icon name="ios-heart-outline"></ion-icon>
+            <span>2</span>
+          </span>
+          <span margin-left>
+            <ion-icon name="ios-list-outline"></ion-icon>
+            <span>5</span>
+          </span>
+        </div>
+
+      </ion-item>
+    </div>
+  </div>
+  <div *ngIf="!places">
+    Loading...
+  </div>
 
 </ion-content>

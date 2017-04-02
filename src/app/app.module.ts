@@ -2,37 +2,56 @@ import { NgModule, ErrorHandler } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { MaterialModule } from '@angular/material';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
+import { Keyboard } from '@ionic-native/keyboard';
+
 import { MyApp } from './app.component';
 
 // Importing Pages
-import { HomePage } from '../pages/home/home';
 import { LoginPage } from '../pages/login/login';
-import { ResetPasswordPage } from '../pages/reset-password/reset-password';
-import { SignupPage } from '../pages/signup/signup';
+import { ResetPasswordPage } from '../pages/login/reset-password/reset-password';
+import { SignupPage } from '../pages/login/signup/signup';
 
 import { TabsPage } from '../pages/tabs/tabs';
+import { AddButtonPopover } from '../pages/tabs/add-button-popover/add-button-popover';
+import { AddListModal } from "../pages/tabs/add-list-modal/add-list-modal";
+
+
+import { HomePage } from '../pages/home/home';
+import { ForYouPage } from '../pages/home/for-you/for-you'
+import { NewsfeedPage } from '../pages/home/newsfeed/newsfeed'
+
 import { ListsPage } from '../pages/lists/lists';
+
 import { PlacesPage } from '../pages/places/places';
+import { PlaceDetailPage } from '../pages/places/place-detail/place-detail';
+
+
 import { PlacelistPage } from '../pages/placelist/placelist';
+import { AddPlaceModal } from '../pages/placelist/add-place-modal/add-place-modal';
+
+
 import { AccountPage } from '../pages/account/account';
 
-import { AddPlaceModal } from '../pages/add-place-modal/add-place-modal';
+
 
 import { KSSwiperModule } from 'angular2-swiper';
-
-//import { CandTLeafletComponent  } from 'angular2.leaflet.components';
-//import { CandTLeafletService } from 'angular2.leaflet.components';
+import { SuperTabsModule } from 'ionic2-super-tabs';
 
 
 
 // Importing Providers
 import { AuthData } from '../providers/auth-data';
+import { AuthenticationService } from '../providers/auth-data-token';
 import { ListsData } from '../providers/lists-data';
 import { ListsData2 } from '../providers/lists-data-2';
+import { PlacesData } from '../providers/places-data';
+import { ListType } from '../providers/objects/listType';
+import { ListTypes_data } from '../providers/objects/listTypes_data';
 
 // Importing AF2 Module
 
 import { AngularFireModule, AuthProviders, AuthMethods } from 'angularfire2';
+import {NavController} from "ionic-angular/index";
 
 // AF2 Settings
 const firebaseConfig = {
@@ -48,48 +67,64 @@ const myFirebaseAuthConfig = {
   method: AuthMethods.Password
 };
 
-let config = { swipeBackEnabled:false };
 
 @NgModule({
   declarations: [
     MyApp,
-    HomePage,
     LoginPage,
     ResetPasswordPage,
     SignupPage,
     TabsPage,
+    AddButtonPopover,
+    HomePage,
+    ForYouPage,
+    NewsfeedPage,
     ListsPage,
     PlacelistPage,
+    PlaceDetailPage,
     PlacesPage,
     AccountPage,
-    AddPlaceModal
+    AddPlaceModal,
+    AddListModal
     //CandTLeafletComponent
   ],
   imports: [
-    IonicModule.forRoot(MyApp, null, config),
+    IonicModule.forRoot(MyApp, {
+      swipeBackEnabled: false
+    }),
     AngularFireModule.initializeApp(firebaseConfig, myFirebaseAuthConfig),
+    SuperTabsModule,
     KSSwiperModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
-    HomePage,
     LoginPage,
     ResetPasswordPage,
     SignupPage,
     TabsPage,
+    AddButtonPopover,
+    HomePage,
+    ForYouPage,
+    NewsfeedPage,
     ListsPage,
     PlacelistPage,
+    PlaceDetailPage,
     PlacesPage,
     AccountPage,
-    AddPlaceModal
+    AddPlaceModal,
+    AddListModal
   ],
   providers: [
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     AuthData,
+    AuthenticationService,
     ListsData,
-    ListsData2
-    //CandTLeafletService
+    ListsData2,
+    PlacesData,
+    Keyboard,
+    ListType,
+    ListTypes_data
   ]
 })
 export class AppModule {}

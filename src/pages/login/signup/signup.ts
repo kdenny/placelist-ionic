@@ -1,12 +1,11 @@
-import {
-    NavController,
-    LoadingController,
-    AlertController } from 'ionic-angular';
+import { NavController, LoadingController, AlertController } from 'ionic-angular';
 import { Component } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { AuthData } from '../../providers/auth-data';
-import { EmailValidator } from '../../validators/email';
-import { HomePage } from '../home/home';
+
+import { AuthenticationService } from '../../../providers/auth-data-token';
+import { EmailValidator } from '../../../validators/email';
+
+import { HomePage } from '../../home/home';
 
 @Component({
     selector: 'page-signup',
@@ -19,12 +18,13 @@ export class SignupPage {
     submitAttempt: boolean = false;
     loading;
 
-    constructor(public nav: NavController, public authData: AuthData,
+    constructor(public nav: NavController, public authData: AuthenticationService,
       public formBuilder: FormBuilder, public loadingCtrl: LoadingController,
       public alertCtrl: AlertController) {
 
       this.signupForm = formBuilder.group({
-        email: ['', Validators.compose([Validators.required,
+          username: ['', Validators.compose([Validators.required])],
+          email: ['', Validators.compose([Validators.required,
           EmailValidator.isValid])],
           password: ['', Validators.compose([Validators.minLength(6),
           Validators.required])]
@@ -51,7 +51,8 @@ export class SignupPage {
         if (!this.signupForm.valid){
             console.log(this.signupForm.value);
         } else {
-            this.authData.signupUser(this.signupForm.value.email,
+            this.authData.register(this.signupForm.value.email,
+                this.signupForm.value.username,
                 this.signupForm.value.password).then(() => {
                     this.nav.setRoot(HomePage);
                 }, (error) => {

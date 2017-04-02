@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { Platform } from 'ionic-angular';
 import { StatusBar, Splashscreen } from 'ionic-native';
+import { MenuController, Nav, NavController } from 'ionic-angular';
 
 import { HomePage } from '../pages/home/home';
 import {LoginPage} from '../pages/login/login';
@@ -18,9 +19,11 @@ declare var google: any;
 })
 
 export class MyApp {
+  @ViewChild('myNav') nav: NavController
   rootPage: any;
 
-  constructor(platform: Platform, public af: AngularFire) {
+  constructor(platform: Platform, public af: AngularFire, public menuController: MenuController) {
+
 
     af.auth.subscribe( user => {
             if (user) {
@@ -28,7 +31,8 @@ export class MyApp {
                 console.log("User found");
                 console.log(user);
             } else {
-                this.rootPage = LoginPage;
+              this.rootPage = LoginPage;
+              //this.rootPage = TabsPage;
             }
         });
 
@@ -37,6 +41,7 @@ export class MyApp {
       // Here you can do any higher level native things you might need.
       StatusBar.styleDefault();
       Splashscreen.hide();
+      this.menuController.swipeEnable(false);
     });
   }
 }

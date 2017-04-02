@@ -14,6 +14,76 @@
 
 
 <ion-content padding>
+  <ion-row>
+    <ion-col width-25>
+      <img src="http://s3.amazonaws.com/37assets/svn/765-default-avatar.png" style="width: 87px; height: 87px;">
+    </ion-col>
+    <ion-col width-25>
+
+    </ion-col>
+    <ion-col width-20>
+      <ion-icon name="settings" style="font-size: 2.08rem;"></ion-icon>
+    </ion-col>
+    <ion-col width-10>
+
+    </ion-col>
+    <ion-col width-20>
+      <ion-icon name="contacts" style="font-size: 2.08rem;"></ion-icon>
+    </ion-col>
+
+  </ion-row>
+  <ion-row>
+    <ion-col width-50>
+      <div *ngIf="authData.currentUsername">
+        <h1 style="font-size: 2.08rem; font-weight: 700;">{{ authData.currentUsername }}</h1>
+        <h5>@{{ authData.currentUsername }}</h5>
+      </div>
+    </ion-col>
+
+  </ion-row>
+  <ion-row>
+    <ion-col width-50>
+      <h4 style="font-size: 1.617rem;"><ion-icon name='pin' item-left></ion-icon> Washington, DC</h4>
+    </ion-col>
+
+  </ion-row>
+  <ion-row>
+    <ion-col width-33>
+      <h4 style="font-size: 1.37rem;">679 Following</h4>
+    </ion-col>
+    <ion-col width-10>
+    </ion-col>
+    <ion-col width-33>
+      <h4 style="font-size: 1.37rem;">185 Followers</h4>
+    </ion-col>
+
+  </ion-row>
+  <ion-row>
+     <ion-segment [(ngModel)]="viewSwitch">
+      <ion-segment-button value="lists">
+        Lists
+      </ion-segment-button>
+      <ion-segment-button value="blurbs">
+        Blurbs
+      </ion-segment-button>
+      <ion-segment-button value="places">
+        Saved Places
+      </ion-segment-button>
+    </ion-segment>
+
+
+  </ion-row>
+
+  <ion-row>
+    <ion-card style="height: 11.5vh; margin-left: 10vw; margin-right: 10vw;">
+      A card
+    </ion-card>
+  </ion-row>
+  <ion-row>
+    <ion-card style="height: 11.5vh; margin-left: 10vw; margin-right: 10vw;">
+      Another card
+    </ion-card>
+  </ion-row>
 
   <button ion-button block (click)="logoutUser()">
       Logout

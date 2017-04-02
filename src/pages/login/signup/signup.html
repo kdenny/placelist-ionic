@@ -10,6 +10,14 @@
 <ion-content padding>
   <form [formGroup]="signupForm" (submit)="signupUser()" novalidate>
 
+
+    <ion-item>
+      <ion-label stacked>Username</ion-label>
+      <ion-input #username formControlName="username" type="username" (change)="elementChanged(username)"
+        placeholder="Your username"></ion-input>
+    </ion-item>
+
+
     <ion-item>
       <ion-label stacked>Email</ion-label>
       <ion-input #email formControlName="email" type="email" (change)="elementChanged(email)"

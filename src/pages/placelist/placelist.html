@@ -6,19 +6,17 @@
 -->
 
 <ion-content>
-
-
-  <ion-row style="margin-top: 2vh;">
-    <ion-col width-90 style="margin-left: 5vw;">
-        <div id="list-title">
-          {{listTitle}}
+  <ion-row style="margin-top: 2vh;" *ngIf="viewMode== 'map'">
+    <ion-col width-90 style="margin-left: 5vw;" (click)="swapView()">
+        <div class="list-title" >
+          {{title}}
         </div>
-      <ion-row id="subheading">
+      <ion-row class="subheading">
         <ion-col width-50 id="author" style="margin-right: -5vw;">
           by {{author}}
         </ion-col>
         <ion-col width-20 text-center>
-          <strong>03 </strong> <ion-icon name="person"></ion-icon>
+          <strong *ngIf="places">{{places.length}}</strong> <ion-icon name="pin"></ion-icon>
         </ion-col>
         <ion-col width-20 text-center>
           <strong>07 </strong> <ion-icon name="star"></ion-icon>
@@ -26,7 +24,7 @@
       </ion-row>
     </ion-col>
     <ion-col width-10 style="margin-left: -8vw;">
-      <div id="close-button">
+      <div class="close-button">
         <button ion-button clear icon-only (click)="dismiss()">
           <ion-icon name="close"></ion-icon>
         </button>
@@ -37,69 +35,161 @@
 
   <!--<div *ngIf="viewMode==='map'" style="width:100%;height:70%;" id="map"></div>-->
 
-  <div style="width:100%;height:60%; z-index: -1;" id="map"></div>
+
+  <div style="width:100%;height:60%; z-index: -1;" *ngIf="viewMode==='map'" id="map" ></div>
+
+  <div id="map-manips" *ngIf="viewMode == 'map'">
 
   <button ion-button round icon-only class="add-places" (click)="addPlaceModal()"><ion-icon name="add-circle"></ion-icon></button>
+  <button ion-button round icon-only class="full-extent" (click)="moveToBase()"><ion-icon name="globe-outline"></ion-icon></button>
 
+  <div class="slide-box-etc" *ngIf="!addingPlacesFlag">
+    <div class="myslides" *ngIf="places" style="height:27vh; margin-right: -35vw; margin-left: -35vw; margin-top: -6vh;">
 
-  <div class="myslides" *ngIf="places" style="height:32vh; margin-right: -35vw; margin-left: -35vw; margin-top: -6vh;">
-
-    <ks-swiper-container [options]="example1SwipeOptions">
-      <ks-swiper-slide *ngFor="let place of placelist.places" >
-        <ion-card class="place-card" style="width:80vw; height: 25vh; margin-top: -3vh; z-index: 1;">
-
-          <ion-row>
-            <ion-col width-25>
-              <img src="https://i.imgsafe.org/2a1c41e949.png" >
-            </ion-col>
-            <ion-col width-75>
-              <ion-row>
-                <div class="place-name">{{place.name}}</div>
-              </ion-row>
-              <ion-row>
-                <div class="flex-container wrap">
-                  <button ion-button round class="place-tag">Fancy</button>
-                  <button ion-button round class="place-tag">Independent</button>
-                  <button ion-button round class="place-tag">Dinner</button>
-                  <button ion-button round class="place-tag">Asian Fusion</button>
-                  <button ion-button round class="place-tag">Cocktails</button>
+      <ks-swiper-container [options]="example1SwipeOptions">
+        <ks-swiper-slide *ngFor="let place of placelist.places" >
+          <ion-card (click)="goToPlace(place.id)" class="place-card" style="width:80vw; height: 25vh; margin-top: -3vh; z-index: 1;">
+            <ion-row>
+              <ion-col width-25>
+                <div *ngIf="place.photoUrl">
+                  <img src="{{place.photoUrl}}" >
                 </div>
-              </ion-row>
-            </ion-col>
-          </ion-row>
+                <div *ngIf="!place.photoUrl">
+                  <img src="https://i.imgsafe.org/2a1c41e949.png" >
+                </div>
 
-          <ion-row>
-            <div style="text-align: left; margin-left: 1vw;">
-              Lorem ipsum consectetur adipiscing elit, sed do eiusmod consectetur adipiscing.
-            </div>
-          </ion-row>
+              </ion-col>
+              <ion-col width-75>
+                <ion-row>
+                  <div class="place-namea">
+                    <div *ngIf="!place.count">
+                        {{place.name}}
+                    </div>
+                    <div *ngIf="place.count">
+                       {{place.count}}. {{place.name}}
+                    </div>
+                  </div>
+                </ion-row>
+                <ion-row>
+                  <div class="flex-container wrap">
+                    <button ion-button round class="place-tag">Fancy</button>
+                    <button ion-button round class="place-tag">Independent</button>
+                    <button ion-button round class="place-tag">Dinner</button>
+                    <button ion-button round class="place-tag">Asian Fusion</button>
+                    <button ion-button round class="place-tag">Cocktails</button>
+                  </div>
+                </ion-row>
+              </ion-col>
+            </ion-row>
 
-          <ion-row style="font-size: 16px;">
-            <ion-col width-10>
-              <ion-icon name="ios-trash-outline"></ion-icon>
-            </ion-col>
-            <ion-col width-20 offset-25>
-              <ion-icon name="ios-share-outline"></ion-icon>
-            </ion-col>
-            <ion-col width-20>
-              <ion-icon name="star-outline"></ion-icon>
-            </ion-col>
-            <ion-col width-20>
-              <ion-icon name="ios-add-circle-outline"></ion-icon>
-            </ion-col>
-          </ion-row>
+
+            <ion-row>
+              <div style="text-align: left; margin-left: 1vw;">
+                Lorem ipsum consectetur adipiscing elit, sed do eiusmod consectetur adipiscing.
+              </div>
+            </ion-row>
+
+            <ion-row style="font-size: 16px;">
+              <ion-col width-10>
+                <ion-icon name="ios-trash-outline" (click)="removePlace(place)"></ion-icon>
+              </ion-col>
+              <ion-col width-20 offset-25>
+                <ion-icon name="ios-share-outline"></ion-icon>
+              </ion-col>
+              <ion-col width-20>
+                <ion-icon name="star-outline"></ion-icon>
+              </ion-col>
+              <ion-col width-20>
+                <ion-icon name="ios-add-circle-outline"></ion-icon>
+              </ion-col>
+            </ion-row>
 
 
-        </ion-card>
-      </ks-swiper-slide>
-    </ks-swiper-container>
-    <!--<button (click)="movePrev()">Prev</button>-->
-    <!--<button (click)="moveNext()">Next</button>-->
+          </ion-card>
+        </ks-swiper-slide>
+      </ks-swiper-container>
+      <!--<button (click)="moveNext()">Next</button>-->
+    </div>
+
+    </div>
+  </div>
+
+  <div *ngIf="viewMode == 'detail'">
+    <ion-row style="margin-top: 2vh;" *ngIf="viewMode=='detail' ">
+      <ion-col width-90 style="margin-left: 5vw;">
+          <div class="list-title" (click)="swapView()">
+            {{title}}
+          </div>
+      </ion-col>
+      <ion-col width-10 style="margin-left: -8vw;">
+        <div class="close-button">
+          <button ion-button clear icon-only (click)="dismiss()">
+            <ion-icon name="close"></ion-icon>
+          </button>
+        </div>
+      </ion-col>
+
+    </ion-row>
+
+    <ion-list no-border>
+
+      <ion-item>
+        <ion-icon name='person' item-left></ion-icon>
+        {{ placelist.author.username }}
+        <ion-note item-right>
+        + 2 collaborators
+        </ion-note>
+
+      </ion-item>
+
+      <ion-item>
+        <ion-icon name='pin' item-left></ion-icon>
+        Washington, DC
+
+      </ion-item>
+      <ion-item no-border>
+        <ion-icon name='restaurant' item-left></ion-icon>
+        {{ placelist.list_type }} &nbsp;-&nbsp; Fancy
+
+      </ion-item>
+      <!--<ion-item no-border>-->
+        <!--<ion-icon name='people' item-left></ion-icon>-->
+        <!--8 followers-->
+      <!--</ion-item>-->
+
+      <ion-list-header style="margin-top: 1vh" class="detail-places">
+        <b> {{ placelist.places.length }} </b> places in list
+      </ion-list-header>
+      <ion-list no-border>
+        <div *ngFor="let place of places">
+          <ion-item (click)="goToPlace(place.id)">
+            <ion-icon name='pin' item-left></ion-icon>
+              {{ place.name }}
+            <ion-note item-right>
+              {{ place.type }}
+            </ion-note>
+
+          </ion-item>
+        </div>
+      </ion-list>
+      <ion-list-header style="margin-top: 1vh" class="detail-places">
+        <b> 7 </b> users following
+      </ion-list-header>
+      <ion-item style="">
+
+      </ion-item>
+
+
+  </ion-list>
+
+
   </div>
 
   <div id="tap" style="display: none;">
 
   </div>
+
+
 
 
 </ion-content>

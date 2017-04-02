@@ -2,13 +2,16 @@ page-placelist {
 
   font-family: 'Open Sans', sans-serif;
 
-  #close-button {
+  .close-button {
     margin-top: 2vh;
     margin-right: 5vw;
-
   }
 
-  #list-title {
+  .detail-places {
+    margin-left: 3vw;
+  }
+
+  .list-title {
     font-size: 24px;
     color: #7D0074;
     //margin-top: 2vh;
@@ -20,7 +23,7 @@ page-placelist {
     font-size: 14px;
   }
 
-  #subheading {
+  .subheading {
     font-size: 12px;
     margin-top: -1vw;
     margin-left: -1vw;
@@ -62,7 +65,6 @@ page-placelist {
   }
 
 
-
   .flex-container {
     padding: 0;
     margin: 0;
@@ -86,11 +88,9 @@ page-placelist {
         width : 60px;
         height : 60px;
         position: relative;
-
     }
 
     .ion-card {
-
       width: 82vw;
     }
   }
@@ -130,6 +130,22 @@ page-placelist {
     width: 2.0em;
     height: 2.0em;
     border-radius: 120px;
+  }
+
+  .full-extent {
+    position: absolute;
+    left: 3.1vw;
+    bottom: 55vh;
+    z-index: 10;
+    width: 1.5em;
+    height: 1.5em;
+    border-radius: 60px;
+  }
+
+  .swiper-slide-next {
+    .place-card {
+      z-index : 6;
+    }
   }
 
 

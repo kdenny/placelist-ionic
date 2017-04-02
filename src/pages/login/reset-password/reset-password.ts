@@ -1,9 +1,12 @@
 import { NavController, AlertController } from 'ionic-angular';
 import { Component } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { AuthData } from '../../providers/auth-data';
-import { LoginPage } from '../login/login';
-import { EmailValidator } from '../../validators/email';
+
+import { AuthData } from '../../../providers/auth-data';
+import { EmailValidator } from '../../../validators/email';
+
+import { LoginPage } from '../../login/login';
+
 
 
 @Component({

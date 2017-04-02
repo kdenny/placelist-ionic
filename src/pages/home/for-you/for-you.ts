@@ -1,40 +1,34 @@
 import { Component, ViewChild } from '@angular/core';
-
 import { NavController, NavParams, Nav, AlertController, PopoverController, ModalController } from 'ionic-angular';
 
-import { ListsData } from '../../providers/lists-data';
-import { AuthData } from '../../providers/auth-data';
-import { ListsData2 } from '../../providers/lists-data-2';
+import { AuthData } from '../../../providers/auth-data';
+import { ListsData2 } from '../../../providers/lists-data-2';
 
-import { List } from '../../providers/objects/list'
-import { ListType } from '../../providers/objects/listType'
-import { ListTypes_data } from '../../providers/objects/listTypes_data'
+import { List } from '../../../providers/objects/list'
+import { ListType } from '../../../providers/objects/listType'
+import { ListTypes_data } from '../../../providers/objects/listTypes_data'
 
-import { PlacelistPage } from '../placelist/placelist';
-import { AddListModal } from '../tabs/add-list-modal/add-list-modal'
+import { PlacelistPage } from '../../placelist/placelist';
+import { AddListModal } from '../../tabs/add-list-modal/add-list-modal'
 
-import { ForYouPage } from './for-you/for-you'
-import { NewsfeedPage } from './newsfeed/newsfeed'
 
 @Component({
-  selector: 'page-home',
-  templateUrl: 'home.html'
+  selector: 'page-for-you',
+  templateUrl: 'for-you.html'
 })
 
 
-export class HomePage {
+export class ForYouPage {
   @ViewChild(Nav) nav: Nav;
   lists: List[];
   size;
   oLists;
-  page1: any = ForYouPage;
-  page2: any = NewsfeedPage;
 
-  showIcons: boolean = true;
-  showTitles: boolean = true;
-  pageTitle: string = 'Full Example';
 
-  constructor(public navCtrl: NavController, public listsDataset: ListsData,
+
+
+
+  constructor(public navCtrl: NavController,
               public authData : AuthData, public navParams: NavParams,
               public modalCtrl: ModalController, public listsData2 : ListsData2,
               public typesProvider: ListTypes_data) {

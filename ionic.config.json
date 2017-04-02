@@ -7,6 +7,10 @@
     {
       "path": "/lists/",
       "proxyUrl": "http://placelist.pythonanywhere.com/lists"
+    },
+    {
+      "path": "/login/",
+      "proxyUrl": "http://127.0.0.1:8000/login"
     }
   ]
 }

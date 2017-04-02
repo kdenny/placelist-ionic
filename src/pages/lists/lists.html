@@ -7,7 +7,7 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>Lists</ion-title>
+    <ion-title>Lists by {{ currentUser }}</ion-title>
   </ion-navbar>
 
 </ion-header>
@@ -15,11 +15,20 @@
 
 <ion-content padding>
 
+
+
   <ion-list>
-    <ion-item *ngFor="let list of userlists | async" (click)="goToList(list._id)" >
-      <h2>{{list?.title}}</h2>
-      <p>Author: <strong>{{list?.author}}</strong></p>
-    </ion-item>
+    <div *ngFor="let list of lists">
+      <div *ngIf="currentUser">
+      <div *ngIf="list.author.username == currentUser">
+        <ion-item (click)="goToList(list.id)" >
+          <h2>{{list?.title}}</h2>
+          <p>Author: <strong>{{list?.author.username}}</strong></p>
+
+        </ion-item>
+      </div>
+      </div>
+    </div>
   </ion-list>
 
 </ion-content>

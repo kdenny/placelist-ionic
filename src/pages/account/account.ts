@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 
-import { AuthData } from '../../providers/auth-data';
+import { AuthenticationService } from '../../providers/auth-data-token';
 
 import { LoginPage } from '../login/login';
 
@@ -19,11 +19,15 @@ import { LoginPage } from '../login/login';
 })
 export class AccountPage {
 
-  constructor(public nav: NavController, public navParams: NavParams, public authData: AuthData) {}
+  viewSwitch;
+
+  constructor(public nav: NavController, public navParams: NavParams, public authData: AuthenticationService) {
+    this.viewSwitch = 'lists';
+  }
 
   logoutUser(){
 
-      this.authData.logoutUser();
+      this.authData.logout();
       this.nav.push(LoginPage);
   }
 

@@ -8,10 +8,12 @@ import {
 import { FormBuilder, Validators } from '@angular/forms';
 
 import { AuthData } from '../../providers/auth-data';
+import { AuthenticationService } from '../../providers/auth-data-token'
 
 import { HomePage } from '../home/home';
-import { SignupPage } from '../signup/signup';
-import { ResetPasswordPage } from '../reset-password/reset-password';
+import { TabsPage } from '../tabs/tabs'
+import { SignupPage } from './signup/signup';
+import { ResetPasswordPage } from './reset-password/reset-password';
 
 import { EmailValidator } from '../../validators/email';
 
@@ -37,12 +39,11 @@ export class LoginPage {
   loading: any;
 
   constructor(public nav: NavController, public authData: AuthData,
-    public formBuilder: FormBuilder, public alertCtrl: AlertController,
+    public formBuilder: FormBuilder, public alertCtrl: AlertController, public authService: AuthenticationService,
     public loadingCtrl: LoadingController) {
 
         this.loginForm = formBuilder.group({
-            email: ['', Validators.compose([Validators.required,
-                EmailValidator.isValid])],
+            username: [''],
             password: ['', Validators.compose([Validators.minLength(6),
             Validators.required])]
         });
@@ -50,7 +51,8 @@ export class LoginPage {
   }
 
   goToResetPassword(){
-      this.nav.push(ResetPasswordPage);
+      //this.nav.push(ResetPasswordPage);
+      this.nav.setRoot(TabsPage);
   }
 
   createAccount(){
@@ -65,27 +67,38 @@ export class LoginPage {
   loginUser(){
       this.submitAttempt = true;
 
-      if (!this.loginForm.valid){
-        console.log(this.loginForm.value);
-      } else {
-        this.authData.loginUser(this.loginForm.value.email,
-          this.loginForm.value.password).then( authData => {
-            this.nav.setRoot(HomePage);
-      }
-          , error => {
-      //  this.loading.dismiss().then( () => {
-      //    let alert = this.alertCtrl.create({
-      //      message: error.message,
-      //      buttons: [
-      //      {
-      //        text: "Ok",
-      //        role: 'cancel'
-      //      }
-      //      ]
-      });
-      //  alert.present();
+      this.authService.login(this.loginForm.value.username,
+          this.loginForm.value.password)
+        .subscribe(result => {
+            if (result === true) {
+                // login successful
+                this.nav.setRoot(TabsPage);
+            } else {
+                // login failed
+                console.log("Failed!")
+            }
+        });
+
+      //if (!this.loginForm.valid){
+      //  console.log(this.loginForm.value);
+      //} else {
+      //  this.authService.login().then( authData => {
+      //
+      //}
+      //    , error => {
+      ////  this.loading.dismiss().then( () => {
+      ////    let alert = this.alertCtrl.create({
+      ////      message: error.message,
+      ////      buttons: [
+      ////      {
+      ////        text: "Ok",
+      ////        role: 'cancel'
+      ////      }
+      ////      ]
       //});
-      }
+      ////  alert.present();
+      ////});
+      //}
 
       //this.loading = this.loadingCtrl.create({
       //  dismissOnPageChange: true,
@@ -96,8 +109,44 @@ export class LoginPage {
 
 
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad LoginPage');
-  }
 
 }
+
+//import { Component, OnInit } from '@angular/core';
+//import { Router } from '@angular/router';
+//
+//import { AuthenticationService } from '../shared-services/user-auth.service';
+//
+//@Component({
+//    templateUrl: 'login.component.html'
+//})
+//
+//export class LoginComponent implements OnInit {
+//    model: any = {};
+//    loading = false;
+//    error = '';
+//
+//    constructor(
+//        private router: Router,
+//        private authenticationService: AuthenticationService) { }
+//
+//    ngOnInit() {
+//        // reset login status
+//        this.authenticationService.logout();
+//    }
+//
+//    login() {
+//        this.loading = true;
+//        this.authenticationService.login(this.model.username, this.model.password)
+//            .subscribe(result => {
+//                if (result === true) {
+//                    // login successful
+//                    this.router.navigate(['/']);
+//                } else {
+//                    // login failed
+//                    this.error = 'Username or password is incorrect';
+//                    this.loading = false;
+//                }
+//            });
+//    }
+//}

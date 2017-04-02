@@ -1,0 +1,14 @@
+<ion-content padding>
+  <div *ngIf="lists">
+
+    <ion-list>
+      <ion-item *ngFor="let list of lists" (click)="goToList(list.id)" >
+        <h2>{{list?.title}}</h2>
+        <p>Author: <strong>{{list?.author.username}}</strong></p>
+      </ion-item>
+    </ion-list>
+  </div>
+  <div *ngIf="!lists">
+    Loading...
+  </div>
+</ion-content>

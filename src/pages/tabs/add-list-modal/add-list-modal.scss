@@ -1,0 +1,46 @@
+page-add-list-modal {
+
+  font-family: 'Open Sans', sans-serif;
+
+  #close-button {
+    margin-top: -1vh;
+    margin-right: 3vw;
+  }
+
+  #submit-button {
+    margin-top: 35vh;
+    width: 80vw;
+    //color: #7D0074;
+  }
+
+  #list-modal-container {
+    margin-top: 3vh;
+    margin-left: 5vw;
+    //width: 95vw;
+    height: 80vh;
+  }
+  //
+  #modal-title {
+    margin-top: 0.5vh;
+    margin-left: 0.5vw;
+    font-weight: bolder;
+    font-size: 20pt;
+    margin-bottom: -0.5vh;
+  }
+  //
+  //#form-box {
+  //  width: 40vw;
+  //}
+  //
+  .form-row {
+    padding-top: 3vh;
+  }
+  //
+  //.title-row {
+  //  margin-top: 2vh;
+  //  font-size: 22px;
+  //}
+
+
+
+}
